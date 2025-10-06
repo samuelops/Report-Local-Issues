@@ -1,0 +1,53 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Admin — Complaints</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="max-w-6xl mx-auto">
+    <h1 class="text-2xl font-semibold mb-4">Admin — Complaints</h1>
+
+    <div class="bg-white shadow rounded p-4">
+        <table class="w-full table-auto">
+            <thead>
+            <tr class="text-left">
+                <th class="px-2 py-2">ID</th>
+                <th class="px-2 py-2">Tracking</th>
+                <th class="px-2 py-2">Title</th>
+                <th class="px-2 py-2">Name</th>
+                <th class="px-2 py-2">Status</th>
+                <th class="px-2 py-2">Created</th>
+                <th class="px-2 py-2">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${page.content}">
+                <td class="border-t px-2 py-2" th:text="${c.id}">1</td>
+                <td class="border-t px-2 py-2" th:text="${c.trackingId}">CIT-...</td>
+                <td class="border-t px-2 py-2" th:text="${c.title}">Title</td>
+                <td class="border-t px-2 py-2" th:text="${c.name}">Name</td>
+                <td class="border-t px-2 py-2" th:text="${c.status}">SUBMITTED</td>
+                <td class="border-t px-2 py-2" th:text="${#temporals.format(c.createdAt, 'dd MMM yyyy HH:mm')}">date</td>
+                <td class="border-t px-2 py-2">
+                    <a th:href="@{|/admin/complaints/${c.id}|}" class="px-2 py-1 bg-blue-600 text-white rounded">View</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-4 flex items-center justify-between">
+            <div>
+                Page <span th:text="${page.number + 1}">1</span> of <span th:text="${page.totalPages}">1</span>
+            </div>
+            <div class="space-x-2">
+                <a th:if="${page.hasPrevious()}" th:href="@{|/admin/complaints?page=${page.number - 1}&size=${page.size}|}" class="px-3 py-1 bg-gray-200 rounded">Prev</a>
+                <a th:if="${page.hasNext()}" th:href="@{|/admin/complaints?page=${page.number + 1}&size=${page.size}|}" class="px-3 py-1 bg-gray-200 rounded">Next</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
