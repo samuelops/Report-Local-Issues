@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Recent Issues Map</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body class="p-4">
+<h1 class="text-xl mb-4">Recent Issues Map</h1>
+<div id="map" class="w-full h-[70vh] rounded border"></div>
+
+<script>
+    const map = L.map('map').setView([13.0827, 80.2707], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    async function loadRecent() {
+      const resp = await fetch('/api/complaints/recent?limit=50');
+      const data = await resp.json();
+      data.forEach(c => {
+        if (c.latitude && c.longitude) {
+          const marker = L.marker([c.latitude, c.longitude]).addTo(map);
+          marker.bindPopup(`<strong>${c.title}</strong><br/>${c.trackingId}`);
+        }
+      });
+    }
+
+    loadRecent();
+</script>
+</body>
+</html>
