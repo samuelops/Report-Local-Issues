@@ -7,9 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-6">
-<div class="max-w-6xl mx-auto">
-    <h1 class="text-2xl font-semibold mb-4">Admin — Complaints</h1>
+<div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-semibold">Admin — Complaints</h1>
 
+    <div class="space-x-2">
+        <a href="/admin/complaints/export"
+           class="px-3 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+           title="Export all complaints as CSV">Export CSV</a>
+    </div>
+</div>
     <div class="bg-white shadow rounded p-4">
         <table class="w-full table-auto">
             <thead>
