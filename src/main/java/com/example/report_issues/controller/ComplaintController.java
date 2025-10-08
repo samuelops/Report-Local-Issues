@@ -99,8 +99,11 @@ public class ComplaintController {
         r.setLatitude(c.getLatitude());
         r.setLongitude(c.getLongitude());
         r.setAddress(c.getAddress());
+        r.setAdminNotes(c.getAdminNotes());
         r.setCreatedAt(c.getCreatedAt());
         r.setUpdatedAt(c.getUpdatedAt());
+        r.setEmail(c.getEmail());
+        r.setPhone(c.getPhone());
 
         if (c.getImagePath() != null && !c.getImagePath().isBlank()) {
             // build a simple image URL: http://{host}/uploads/{filename}
