@@ -14,10 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    @Value("${app.admin.username}")
+    @Value("${app.admin.username:admin}")
     private String adminUser;
 
-    @Value("${app.admin.password}")
+    @Value("${app.admin.password:admin123}")
     private String adminPass;
 
     @Bean
@@ -32,16 +32,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**")) // allow API POSTs without CSRF token
+                // keep API POSTs free of CSRF if desired (we left this earlier)
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(auth -> auth
+                        // login page should be accessible
+                        .requestMatchers("/admin/login", "/admin/login/**").permitAll()
+                        // static resources allowed
+                        .requestMatchers("/uploads/**", "/static/**", "/css/**", "/js/**", "/images/**", "/", "/submit.html", "/track.html", "/recent-map.html", "/").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/login", "/uploads/**", "/submit.html", "/api/complaints/**", "/health", "/css/**", "/js/**", "/favicon.ico", "/").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/complaints/**").permitAll()
+                        .anyRequest().permitAll()
                 )
-                .httpBasic(Customizer.withDefaults()) // admin via basic auth
-                .formLogin(Customizer.withDefaults()) // optional form login page
-                .logout(logout -> logout.logoutUrl("/logout").permitAll());
-
+                // form-based login for admin
+                .formLogin(form -> form
+                        .loginPage("/admin/login")
+                        .loginProcessingUrl("/admin/login")    // POST URL for credentials
+                        .defaultSuccessUrl("/admin/complaints", true)
+                        .failureUrl("/admin/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/admin/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                )
+                .httpBasic(Customizer.withDefaults()); // keep basic for APIs/tools if you want
         return http.build();
     }
 }

@@ -74,6 +74,11 @@ public class AdminController {
                 .body(stream);
     }
 
+    @GetMapping("/login")
+    public String loginPage() {
+        // returns templates/admin/login.html
+        return "admin/login";
+    }
 
     // Update status & admin notes
     @PostMapping("/complaints/{id}/status")
