@@ -23,10 +23,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: secret
       APP_ADMIN_USERNAME: admin
       APP_ADMIN_PASSWORD: admin123
-      SPRING_MAIL_HOST: ${SPRING_MAIL_HOST:-}
-      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-}
-      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-}
-      APP_EMAIL_ENABLED: "false"
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_USERNAME: charlessamuelmgr@gmail.com
+      SPRING_MAIL_PASSWORD: eots muoi sejq aysh
+      APP_EMAIL_ENABLED: "true"
       APP_UPLOAD_DIR: /app/uploads
     ports:
       - "8080:8080"
