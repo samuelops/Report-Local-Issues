@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: report_issues
+      MYSQL_USER: app
+      MYSQL_PASSWORD: secret
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  app:
+    build: .
+    depends_on:
+      - db
+    command: ["sh", "-c", "sleep 25 && java -jar /app/app.jar"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/report_issues?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: app
+      SPRING_DATASOURCE_PASSWORD: secret
+      APP_ADMIN_USERNAME: admin
+      APP_ADMIN_PASSWORD: admin123
+      SPRING_MAIL_HOST: ${SPRING_MAIL_HOST:-}
+      SPRING_MAIL_USERNAME: ${SPRING_MAIL_USERNAME:-}
+      SPRING_MAIL_PASSWORD: ${SPRING_MAIL_PASSWORD:-}
+      APP_EMAIL_ENABLED: "false"
+      APP_UPLOAD_DIR: /app/uploads
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  db-data:
