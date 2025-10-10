@@ -1,24 +1,29 @@
 version: "3.8"
 services:
   db:
-    image: mysql:8.0
+    # CRITICAL CHANGE: Use PostgreSQL Image
+    image: postgres:18-alpine
     environment:
-      MYSQL_ROOT_PASSWORD: 12345678
-      MYSQL_DATABASE: report_issues
-      MYSQL_USER: app
-      MYSQL_PASSWORD: secret
+      # Use POSTGRES-specific environment variables
+      POSTGRES_DB: report_issues
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: secret
     volumes:
-      - db-data:/var/lib/mysql
+      # Change volume mount path for Postgres
+      - db-data:/var/lib/postgresql/data
     ports:
-      - "3306:3306"
+      # Change port mapping to 5432
+      - "5432:5432"
 
   app:
     build: .
     depends_on:
       - db
     command: ["sh", "-c", "sleep 25 && java -jar /app/app.jar"]
+    entrypoint: ["java","-jar","/app/app.jar"]
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/report_issues?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      # CRITICAL CHANGE: Update URL to use postgres driver and the container hostname 'db'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/report_issues
       SPRING_DATASOURCE_USERNAME: app
       SPRING_DATASOURCE_PASSWORD: secret
       APP_ADMIN_USERNAME: admin
@@ -36,3 +41,43 @@ services:
 
 volumes:
   db-data:
+
+
+#version: "3.8"
+#services:
+#  db:
+#    image: mysql:8.0
+#    environment:
+#      MYSQL_ROOT_PASSWORD: 12345678
+#      MYSQL_DATABASE: report_issues
+#      MYSQL_USER: app
+#      MYSQL_PASSWORD: secret
+#    volumes:
+#      - db-data:/var/lib/mysql
+#    ports:
+#      - "3306:3306"
+#
+#  app:
+#    build: .
+#    depends_on:
+#      - db
+#    command: ["sh", "-c", "sleep 25 && java -jar /app/app.jar"]
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/report_issues?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+#      SPRING_DATASOURCE_USERNAME: app
+#      SPRING_DATASOURCE_PASSWORD: secret
+#      APP_ADMIN_USERNAME: admin
+#      APP_ADMIN_PASSWORD: admin123
+#      SPRING_MAIL_HOST: smtp.gmail.com
+#      SPRING_MAIL_USERNAME: reportlocalissues@gmail.com
+#      SPRING_MAIL_PASSWORD: fnku kjdh vozn zwwr
+#      APP_EMAIL_ENABLED: "true"
+#      APP_UPLOAD_DIR: /app/uploads
+#    ports:
+#      - "8080:8080"
+#    volumes:
+#      - ./uploads:/app/uploads
+#    restart: unless-stopped
+#
+#volumes:
+#  db-data:
