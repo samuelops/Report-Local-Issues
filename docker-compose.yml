@@ -24,8 +24,8 @@ services:
       APP_ADMIN_USERNAME: admin
       APP_ADMIN_PASSWORD: admin123
       SPRING_MAIL_HOST: smtp.gmail.com
-      SPRING_MAIL_USERNAME: charlessamuelmgr@gmail.com
-      SPRING_MAIL_PASSWORD: eots muoi sejq aysh
+      SPRING_MAIL_USERNAME: reportlocalissues@gmail.com
+      SPRING_MAIL_PASSWORD: fnku kjdh vozn zwwr
       APP_EMAIL_ENABLED: "true"
       APP_UPLOAD_DIR: /app/uploads
     ports:
