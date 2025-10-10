@@ -19,18 +19,18 @@ services:
     build: .
     depends_on:
       - db
-    command: ["sh", "-c", "sleep 25 && java -jar /app/app.jar"]
+    # Removed unnecessary 'sleep 25' command
     entrypoint: ["java","-jar","/app/app.jar"]
     environment:
       # CRITICAL CHANGE: Update URL to use postgres driver and the container hostname 'db'
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/report_issues
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-d3k780l6ubrc73do06t0-a.oregon-postgres.render.com:5432/report_issues_mntj?sslmode=require
       SPRING_DATASOURCE_USERNAME: app
-      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_DATASOURCE_PASSWORD: p7jyNRbJ36hPFy7vQ5emos1KCQec3UQf
       APP_ADMIN_USERNAME: admin
       APP_ADMIN_PASSWORD: admin123
       SPRING_MAIL_HOST: smtp.gmail.com
       SPRING_MAIL_USERNAME: reportlocalissues@gmail.com
-      SPRING_MAIL_PASSWORD: fnku kjdh vozn zwwr
+      SPRING_MAIL_PASSWORD: bdnw cepp ionx djao
       APP_EMAIL_ENABLED: "true"
       APP_UPLOAD_DIR: /app/uploads
     ports:
