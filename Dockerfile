@@ -26,6 +26,8 @@ RUN addgroup -S appuser && adduser -S -G appuser appuser
 COPY --from=build /app/target/*.jar app.jar
 RUN chown appuser:appuser /app/app.jar
 
+RUN mkdir -p /app/uploads && chown -R appuser:appuser /app/uploads
+
 # switch to non-root user
 USER appuser
 

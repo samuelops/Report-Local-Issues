@@ -15,10 +15,12 @@ public class ComplaintService {
 
     private final ComplaintRepository repo;
     private final FileStorageService fileStorage;
+    private final EmailService emailService;
 
-    public ComplaintService(ComplaintRepository repo, FileStorageService fileStorage) {
+    public ComplaintService(ComplaintRepository repo, FileStorageService fileStorage, EmailService emailService) {
         this.repo = repo;
         this.fileStorage = fileStorage;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -54,6 +56,15 @@ public class ComplaintService {
         c.setCreatedAt(LocalDateTime.now());
 
         repo.save(c);
+        // after saving, attempt to send acknowledgement (async)
+        if (c.getEmail() != null && !c.getEmail().isBlank()) {
+            try {
+                emailService.sendComplaintAcknowledgement(c.getEmail(), c.getName(), c.getTrackingId(), c.getTitle(), c.getDescription());
+            } catch (Exception e) {
+                // swallow to not fail the API; log
+                System.err.println("Email send error: " + e.getMessage());
+            }
+        }
         return trackingId;
     }
 }

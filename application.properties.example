@@ -1,0 +1,9 @@
+# Copy to application.properties and set your values
+spring.datasource.url=jdbc:postgresql://localhost:5432/report_issues
+spring.datasource.username=postgres
+spring.datasource.password=secret
+
+app.upload.dir=uploads
+app.admin.username=admin
+app.admin.password=admin123
+app.email.enabled=false
