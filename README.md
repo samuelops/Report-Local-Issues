@@ -23,7 +23,15 @@ Requirements:
 - Docker (optional, for container run)
 - PostgreSQL or MySQL
 
-1. Clone:
 ```bash
+# 1️⃣ Clone
 git clone https://github.com/samuelops/Report-Local-Issues.git
 cd Report-Local-Issues
+
+# 2️⃣ Copy and edit environment file
+cp application.properties.example application.properties
+# set your DB credentials and mail config
+
+# 3️⃣ Build & Run
+./mvnw clean package
+java -jar target/report-issues-0.0.1-SNAPSHOT.jar
